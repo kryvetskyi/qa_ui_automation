@@ -44,8 +44,7 @@ class TestElements:
 
             radio_button_page.click_radio_button('no')
             no = radio_button_page.get_success_text_output_from_radio_button()
-            print(yes, impressive, no)
+
             assert yes == 'Yes', 'Yes have not been selected'
             assert impressive == 'Impressive', 'Impressive have not been selected'
             assert no == 'No', 'No have not been selected'
-

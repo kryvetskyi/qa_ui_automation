@@ -71,18 +71,6 @@ class CheckBoxPage(BasePage):
 class RadioButtonPage(BasePage):
     locators = RadioButtonPageLocators()
 
-    def click_radio_button_yes(self):
-        radio_button_yes = self.is_element_present(self.locators.YES_RADIO_BUTTON)
-        radio_button_yes.click()
-
-    def click_radio_button_impressive(self):
-        radio_button_impressive = self.is_element_present(self.locators.IMPRESSIVE_RADIO_BUTTON)
-        radio_button_impressive.click()
-
-    # def get_success_text_output_from_radio_button(self):
-    #     result_output = self.are_elements_present(self.locators.OUTPUT_RESULT)
-    #     return ''.join([word.text for word in result_output])
-
     def click_radio_button(self, choice):
         choices = {
             "yes": self.locators.YES_RADIO_BUTTON,
@@ -94,17 +82,3 @@ class RadioButtonPage(BasePage):
 
     def get_success_text_output_from_radio_button(self):
         return self.is_element_visible(self.locators.OUTPUT_RESULT).text
-
-
-
-
-
-
-
-
-
-
-
-
-
-
