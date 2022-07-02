@@ -1,10 +1,10 @@
 import random
-import time
 
 from generator.generator import generate_person
 from pages.base_page import BasePage
 from locators.elements_page_locators import TextBoxPageLocators
 from locators.elements_page_locators import CheckBoxPageLocators
+from locators.elements_page_locators import RadioButtonPageLocators
 
 
 class TestBoxPage(BasePage):
@@ -66,6 +66,43 @@ class CheckBoxPage(BasePage):
         result_list = self.are_elements_present(self.locators.OUTPUT_RESULT)
         items_text = [word.text for word in result_list]
         return str(items_text).lower().replace(' ', '')
+
+
+class RadioButtonPage(BasePage):
+    locators = RadioButtonPageLocators()
+
+    def click_radio_button_yes(self):
+        radio_button_yes = self.is_element_present(self.locators.YES_RADIO_BUTTON)
+        radio_button_yes.click()
+
+    def click_radio_button_impressive(self):
+        radio_button_impressive = self.is_element_present(self.locators.IMPRESSIVE_RADIO_BUTTON)
+        radio_button_impressive.click()
+
+    # def get_success_text_output_from_radio_button(self):
+    #     result_output = self.are_elements_present(self.locators.OUTPUT_RESULT)
+    #     return ''.join([word.text for word in result_output])
+
+    def click_radio_button(self, choice):
+        choices = {
+            "yes": self.locators.YES_RADIO_BUTTON,
+            "impressive": self.locators.IMPRESSIVE_RADIO_BUTTON,
+            "no": self.locators.NO_IMPRESSIVE_RADIO
+        }
+
+        self.is_element_visible(choices[choice]).click()
+
+    def get_success_text_output_from_radio_button(self):
+        return self.is_element_visible(self.locators.OUTPUT_RESULT).text
+
+
+
+
+
+
+
+
+
 
 
 
