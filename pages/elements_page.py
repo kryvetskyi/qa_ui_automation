@@ -1,10 +1,16 @@
 import random
+import time
+
 from selenium.webdriver.common.by import By
 from generator.generator import generate_person
 from pages.base_page import BasePage
-from locators.elements_page_locators import TextBoxPageLocators, WebTablePageLocators
-from locators.elements_page_locators import CheckBoxPageLocators
-from locators.elements_page_locators import RadioButtonPageLocators
+from locators.elements_page_locators import (
+    TextBoxPageLocators,
+    WebTablePageLocators,
+    ButtonsPageLocators,
+    CheckBoxPageLocators,
+    RadioButtonPageLocators
+)
 
 
 class TestBoxPage(BasePage):
@@ -35,7 +41,6 @@ class TestBoxPage(BasePage):
 
 
 class CheckBoxPage(BasePage):
-
     locators = CheckBoxPageLocators()
 
     def open_full_list(self):
@@ -153,4 +158,29 @@ class WebTablePage(BasePage):
         return len(self.are_elements_present(self.locators.FULL_PEOPLE_LIST))
 
 
+class ButtonsPage(BasePage):
+    locators = ButtonsPageLocators()
 
+    def click_different_buttons(self):
+        actions = {
+            'double': self.action_double_click(self.is_element_visible(self.locators.DOUBLE_CLICK_BUTTON)),
+            'right_click': self.action_right_click(self.is_element_visible(self.locators.RIGHT_CLICK_BUTTON)),
+            'simple_click': self.is_element_visible(self.locators.CLICK_ME_BUTTON).click()
+        }
+
+        for action in actions:
+            actions.get(action)
+
+    def check_buttons_text(self):
+
+        text = {
+            'double': self.is_element_visible(self.locators.DOUBLE_CLICK_MESSAGE).text,
+            'right': self.is_element_visible(self.locators.RIGHT_CLICK_MESSAGE).text,
+            'simple_click': self.is_element_visible(self.locators.CLICK_ME_MESSAGE).text
+        }
+
+        for _ in range(1):
+            first = text.get('double')
+            second = text.get('right')
+            last = text.get('simple_click')
+            return first, second, last
