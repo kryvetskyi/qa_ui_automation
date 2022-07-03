@@ -43,7 +43,10 @@ class WebTablePageLocators:
     SUBMIT = (By.CSS_SELECTOR, "button[id='submit']")
 
     # Persons table
-    FUL_PEOPLE_LIST = (By.CSS_SELECTOR, "div[class='rt-tr-group']")
+    FULL_PEOPLE_LIST = (By.CSS_SELECTOR, "div[class='rt-tr-group']")
     SEARCH_BOX = (By.CSS_SELECTOR, "input[id='searchBox']")
     DELETE_BUTTON = (By.CSS_SELECTOR, "span[title='Delete']")
     ROW_PARENT = ".//ancestor::div[@class ='rt-tr-group']"
+    UPDATE_BUTTON = (By.CSS_SELECTOR, "span[title='Edit']")
+    NO_ROWS_FOUND = (By.CSS_SELECTOR, "div[class='rt-noData']")
+    COUNT_ROW_LIST = (By.CSS_SELECTOR, "select[aria-label = 'rows per page']")

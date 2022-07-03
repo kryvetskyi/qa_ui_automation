@@ -1,5 +1,5 @@
 import random
-
+from selenium.webdriver.common.by import By
 from generator.generator import generate_person
 from pages.base_page import BasePage
 from locators.elements_page_locators import TextBoxPageLocators, WebTablePageLocators
@@ -113,7 +113,7 @@ class WebTablePage(BasePage):
             return [firstname, lastname, str(age), email, str(salary), department]
 
     def check_added_person(self):
-        persons_list = self.are_elements_present(self.locators.FUL_PEOPLE_LIST)
+        persons_list = self.are_elements_present(self.locators.FULL_PEOPLE_LIST)
         return [person.text.splitlines() for person in persons_list]
 
     def search_some_person(self, person_data):
@@ -123,3 +123,34 @@ class WebTablePage(BasePage):
         delete_button = self.is_element_visible(self.locators.DELETE_BUTTON)
         row = delete_button.find_element("xpath", self.locators.ROW_PARENT)
         return row.text.splitlines()
+
+    def update_person_info(self):
+        person_info = next(generate_person())
+        age = person_info.age
+        self.is_element_visible(self.locators.UPDATE_BUTTON).click()
+        self.is_element_visible(self.locators.AGE_INPUT).clear()
+        self.is_element_visible(self.locators.AGE_INPUT).send_keys(age)
+        self.is_element_visible(self.locators.SUBMIT).click()
+        return str(age)
+
+    def delete_person(self):
+        return self.is_element_visible(self.locators.DELETE_BUTTON).click()
+
+    def check_deleted(self):
+        return self.is_element_visible(self.locators.NO_ROWS_FOUND).text
+
+    def select_rows(self):
+        count = [5, 10, 20, 25, 50, 100]
+        data = []
+        for row in count:
+            self.scroll_down()
+            self.is_element_visible(self.locators.COUNT_ROW_LIST).click()
+            self.is_element_visible(By.CSS_SELECTOR, f"option[value='{row}']").click()
+            data.append(self.check_count_rows())
+        return data
+
+    def check_count_rows(self):
+        return len(self.are_elements_present(self.locators.FULL_PEOPLE_LIST))
+
+
+
