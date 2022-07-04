@@ -123,17 +123,16 @@ class TestElements:
 
     class TestLinkPage:
 
-        # def test_check_valid_link(self, driver):
-        #     links_page = LinksPage(driver, 'https://demoqa.com/links')
-        #     links_page.open()
-        #     href, cur_url = links_page.check_new_tab_valid_link()
-        #     assert href == cur_url
+        def test_check_valid_link(self, driver):
+            links_page = LinksPage(driver, 'https://demoqa.com/links')
+            links_page.open()
+            href, cur_url = links_page.check_new_tab_valid_link()
+            assert href == cur_url
 
         def test_check_invalid_link(self, driver):
             links_page = LinksPage(driver, 'https://demoqa.com/links')
             links_page.open()
             url = links_page.check_broken_link('https://demoqa.com/bad-request')
-            print(url)
             assert url == 400
 
 
