@@ -64,3 +64,16 @@ class ButtonsPageLocators:
 class LinksPageLocators:
     VALID_HOME_LINK = (By.CSS_SELECTOR, "a[id='simpleLink']")
     INVALID_LINK = (By.CSS_SELECTOR, "a[id='bad-request']")
+
+
+class DownloadPageLocators:
+    FILE_INPUT = (By.CSS_SELECTOR, "input[id='uploadFile']")
+    FILE_TEXT = (By.CSS_SELECTOR, "p[id='uploadedFilePath']")
+    DOWNLOAD_BUTTON = (By.CSS_SELECTOR, "a[id='downloadButton']")
+
+
+class DynamicPropertiesLocators:
+
+    COLOR_CHANGE = (By.CSS_SELECTOR,  "button[id='colorChange']")
+    ENABLE_BUTTON = (By.CSS_SELECTOR,  "button[id='enableAfter']")
+    VISIBLE_AFTER = (By.CSS_SELECTOR,  "button[id='visibleAfter']")
