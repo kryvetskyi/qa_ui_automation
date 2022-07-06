@@ -1,3 +1,4 @@
+import os
 import random
 import time
 
@@ -8,6 +9,8 @@ from pages.elements_page import (
     RadioButtonPage,
     WebTablePage,
     LinksPage,
+    DownloadPage,
+    DynamicProperties,
 )
 
 
@@ -116,7 +119,6 @@ class TestElements:
             buttons_page.open()
             buttons_page.click_different_buttons()
             result = buttons_page.check_buttons_text()
-
             assert result[0] == 'You have done a double click', 'Double click was not performed.'
             assert result[1] == 'You have done a right click', 'Right click was not performed.'
             assert result[2] == 'You have done a dynamic click', 'Click was not performed.'
@@ -127,12 +129,49 @@ class TestElements:
             links_page = LinksPage(driver, 'https://demoqa.com/links')
             links_page.open()
             href, cur_url = links_page.check_new_tab_valid_link()
-            assert href == cur_url
+            assert href == cur_url, 'The link is broken or url is incorrect'
 
         def test_check_invalid_link(self, driver):
             links_page = LinksPage(driver, 'https://demoqa.com/links')
             links_page.open()
             url = links_page.check_broken_link('https://demoqa.com/bad-request')
-            assert url == 400
+            assert url == 400, 'The link works or the status code in son 400'
 
+    class TestUploadDownload:
 
+        def test_upload_file(self, driver, output_file):
+            download_page = DownloadPage(driver, 'https://demoqa.com/upload-download')
+            download_page.open()
+            filepath, file_name = output_file
+            download_page.upload_file(filepath)
+            file_text = download_page.get_uploaded_file_text()
+
+            assert file_name == file_text, 'The file has not been uploaded'
+
+        def test_download_file(self, driver, output_file):
+            download_page = DownloadPage(driver, 'https://demoqa.com/upload-download')
+            download_page.open()
+            file_path, _ = output_file
+            file = download_page.download_file(file_path)
+
+            assert file is True, 'The file has not been downloaded'
+
+    class TestDynamicProperties:
+
+        def test_button_enable(self, driver):
+            dynamic_properties_page = DynamicProperties(driver, 'https://demoqa.com/dynamic-properties')
+            dynamic_properties_page.open()
+            enabled_button = dynamic_properties_page.check_button_enabled()
+            assert enabled_button is True, 'Button not enabled.'
+
+        def test_button_color_change(self, driver):
+            dynamic_properties_page = DynamicProperties(driver, 'https://demoqa.com/dynamic-properties')
+            dynamic_properties_page.open()
+            color_before, color_after = dynamic_properties_page.check_changed_color()
+            assert color_before != color_after, 'Color was not changed.'
+
+        def test_button_appears(self, driver):
+            dynamic_properties_page = DynamicProperties(driver, 'https://demoqa.com/dynamic-properties')
+            dynamic_properties_page.open()
+            button = dynamic_properties_page.check_button_appears()
+            assert button is True, 'Button does not appears after 5 seconds.'

@@ -1,6 +1,10 @@
 import random
-import requests
+import time
 
+import requests
+import base64
+import os
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from generator.generator import generate_person
 from pages.base_page import BasePage
@@ -11,6 +15,8 @@ from locators.elements_page_locators import (
     CheckBoxPageLocators,
     RadioButtonPageLocators,
     LinksPageLocators,
+    DownloadPageLocators,
+    DynamicPropertiesLocators
 )
 
 
@@ -163,28 +169,15 @@ class ButtonsPage(BasePage):
     locators = ButtonsPageLocators()
 
     def click_different_buttons(self):
-        actions = {
-            'double': self.action_double_click(self.is_element_visible(self.locators.DOUBLE_CLICK_BUTTON)),
-            'right_click': self.action_right_click(self.is_element_visible(self.locators.RIGHT_CLICK_BUTTON)),
-            'simple_click': self.is_element_visible(self.locators.CLICK_ME_BUTTON).click()
-        }
-
-        for action in actions:
-            actions.get(action)
+        self.action_double_click(self.is_element_visible(self.locators.DOUBLE_CLICK_BUTTON))
+        self.action_right_click(self.is_element_visible(self.locators.RIGHT_CLICK_BUTTON))
+        self.is_element_visible(self.locators.CLICK_ME_BUTTON).click()
 
     def check_buttons_text(self):
-
-        text = {
-            'double': self.is_element_visible(self.locators.DOUBLE_CLICK_MESSAGE).text,
-            'right': self.is_element_visible(self.locators.RIGHT_CLICK_MESSAGE).text,
-            'simple_click': self.is_element_visible(self.locators.CLICK_ME_MESSAGE).text
-        }
-
-        for _ in range(1):
-            first = text.get('double')
-            second = text.get('right')
-            last = text.get('simple_click')
-            return first, second, last
+        first = self.is_element_visible(self.locators.DOUBLE_CLICK_MESSAGE).text
+        second = self.is_element_visible(self.locators.RIGHT_CLICK_MESSAGE).text
+        last = self.is_element_visible(self.locators.CLICK_ME_MESSAGE).text
+        return first, second, last
 
 
 class LinksPage(BasePage):
@@ -210,4 +203,47 @@ class LinksPage(BasePage):
             return r.status_code
 
 
+class DownloadPage(BasePage):
+    locators = DownloadPageLocators()
 
+    def upload_file(self, file):
+        return self.is_element_present(self.locators.FILE_INPUT).send_keys(file)
+
+    def get_uploaded_file_text(self):
+        return self.is_element_visible(self.locators.FILE_TEXT).text.split('\\')[-1]
+
+    def download_file(self, file_path):
+        link = self.is_element_present(self.locators.DOWNLOAD_BUTTON).get_attribute('href')
+        link = base64.b64decode(link)
+        offset = link.find(b'\xff\xd8')
+
+        with open(file_path, 'wb') as f:
+            f.write(link[offset:])
+            check_file = os.path.exists(file_path)
+        return check_file
+
+
+class DynamicProperties(BasePage):
+    locators = DynamicPropertiesLocators()
+
+    def check_button_enabled(self):
+        try:
+            self.is_element_clickable(self.locators.ENABLE_BUTTON)
+        except TimeoutException:
+            return False
+        return True
+
+    def check_changed_color(self):
+        color_button = self.is_element_present(self.locators.COLOR_CHANGE)
+        color_before = color_button.value_of_css_property('color')
+        color_button.click()
+        time.sleep(5)
+        color_after = color_button.value_of_css_property('color')
+        return color_before, color_after
+
+    def check_button_appears(self):
+        try:
+            self.is_element_visible(self.locators.VISIBLE_AFTER)
+        except TimeoutException:
+            return False
+        return True
