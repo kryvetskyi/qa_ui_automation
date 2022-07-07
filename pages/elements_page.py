@@ -189,7 +189,7 @@ class LinksPage(BasePage):
         response = requests.get(f'{link_href}bad')
         if response.status_code == 200:
             valid_link.click()
-            self.driver.switch_to.window(self.driver.window_handles[1])
+            self.switch_to_new_tab()
             url = self.driver.current_url
             return link_href, url
         else:

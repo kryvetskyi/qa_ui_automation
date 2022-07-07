@@ -1,5 +1,3 @@
-import time
-
 from generator.generator import generate_person
 from selenium.webdriver import Keys
 from locators.form_page_locators import FormPageLocators
