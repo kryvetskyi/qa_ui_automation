@@ -17,4 +17,5 @@ def generate_person():
         email=faker_en.email(),
         cur_addr=faker_en.address(),
         permanent_addr=faker_en.address(),
+        mobile=faker_en.msisdn()[:10],
     )
