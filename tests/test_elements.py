@@ -63,7 +63,6 @@ class TestElements:
             web_table_page = WebTablePage(driver, 'https://demoqa.com/webtables')
             web_table_page.open()
             created_person = web_table_page.add_new_person()
-            time.sleep(2)
             all_persons = web_table_page.check_added_person()
 
             assert created_person in all_persons

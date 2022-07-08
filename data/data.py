@@ -12,3 +12,4 @@ class Person:
     email: str = None
     cur_addr: str = None
     permanent_addr: str = None
+    mobile: str = None
