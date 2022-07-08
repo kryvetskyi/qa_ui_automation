@@ -1,9 +1,8 @@
 import random
-
+import time
 from locators.alerts_frame_windows_locators import BrowserWindowsPageLocators
 from pages.base_page import BasePage
 from selenium.webdriver.common.by import By
-import time
 
 
 class BrowserWindowsPage(BasePage):
@@ -45,3 +44,26 @@ class AlertPage(BasePage):
         modal.accept()
         text_result = self.is_element_present(self.PROMPT_RESULT).text
         return text, text_result
+
+
+class FramePage(BasePage):
+    FIRST_FRAME = (By.CSS_SELECTOR, "iframe[id='frame1']")
+    SECOND_FRAME = (By.CSS_SELECTOR, "iframe[id='frame2']")
+    TITLE_FRAME = (By.CSS_SELECTOR, "h1[id='sampleHeading']")
+
+    def check_frame(self, frame):
+        if frame == 'frame1':
+            frame1 = self.is_element_present(self.FIRST_FRAME)
+            width = frame1.get_attribute('width')
+            height = frame1.get_attribute('height')
+            self.driver.switch_to.frame(frame1)
+            text = self.is_element_present(self.TITLE_FRAME).text
+            self.driver.switch_to.default_content()
+            return [width, height, text]
+        if frame == 'frame2':
+            frame = self.is_element_present(self.SECOND_FRAME)
+            width = frame.get_attribute('width')
+            height = frame.get_attribute('height')
+            self.driver.switch_to.frame(frame)
+            text = self.is_element_present(self.TITLE_FRAME).text
+            return [width, height, text]

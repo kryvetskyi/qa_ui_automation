@@ -1,4 +1,8 @@
-from pages.alerts_page import BrowserWindowsPage, AlertPage
+from pages.alerts_page import (
+    BrowserWindowsPage,
+    AlertPage,
+    FramePage
+)
 
 
 class TestAlertFrameWindow:
@@ -42,3 +46,12 @@ class TestAlertFrameWindow:
             text_to_send, result_text = alert_page.check_confirm_prompt()
             assert text_to_send in result_text
 
+    class TestFrame:
+
+        def test_frames(self, driver):
+            frame_page = FramePage(driver, 'https://demoqa.com/frames')
+            frame_page.open()
+            first = frame_page.check_frame('frame1')
+            second = frame_page.check_frame('frame2')
+            assert first == ['500px', '350px', 'This is a sample page']
+            assert second == ['100px', '100px', 'This is a sample page']
