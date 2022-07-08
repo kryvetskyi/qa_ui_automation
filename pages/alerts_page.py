@@ -67,3 +67,46 @@ class FramePage(BasePage):
             self.driver.switch_to.frame(frame)
             text = self.is_element_present(self.TITLE_FRAME).text
             return [width, height, text]
+
+
+class NestedFrame(BasePage):
+    PARENT_FRAME = (By.CSS_SELECTOR, "iframe[id='frame1']")
+    PARENT_TEXT = (By.CSS_SELECTOR, "body")
+    CHILD_FRAME = (By.CSS_SELECTOR, "iframe[srcdoc='<p>Child Iframe</p>']")
+    CHILD_TEXT = (By.CSS_SELECTOR, "p")
+
+    def check_nested_frame(self):
+        parent_frame = self.is_element_present(self.PARENT_FRAME)
+        self.driver.switch_to.frame(parent_frame)
+        p_text = self.is_element_present(self.PARENT_TEXT).text
+
+        child_frame = self.is_element_present(self.CHILD_FRAME)
+        self.driver.switch_to.frame(child_frame)
+        c_text = self.is_element_present(self.CHILD_TEXT).text
+        return p_text, c_text
+
+
+class ModalDialog(BasePage):
+    _SMALL_MODAL_BTN = (By.CSS_SELECTOR, "button[id='showSmallModal']")
+    _SMALL_BTN_TITLE = (By.CSS_SELECTOR, "div[id='example-modal-sizes-title-sm']")
+    _SMALL_BTN_BODY = (By.CSS_SELECTOR, "div[class='modal-body']")
+    _CLOSE_SMALL_MODAL_BTN = (By.CSS_SELECTOR, "button[id='closeSmallModal']")
+
+    _LARGE_MODAL_BTN = (By.CSS_SELECTOR, "button[id='showLargeModal']")
+    _LARGE_BTN_BODY = (By.CSS_SELECTOR, "div[class='modal-body'] p")
+    _LARGE_BTN_TITLE = (By.CSS_SELECTOR, "div[id='example-modal-sizes-title-lg']")
+    _CLOSE_LARGE_MODAL_BTN = (By.CSS_SELECTOR, "button[id='closeLargeModal']")
+
+    def check_modal_dialog(self):
+        self.is_element_visible(self._SMALL_MODAL_BTN).click()
+        small_title = self.is_element_present(self._SMALL_BTN_TITLE).text
+        small_body = self.is_element_present(self._SMALL_BTN_BODY).text
+        self.is_element_visible(self._CLOSE_SMALL_MODAL_BTN).click()
+
+        self.is_element_visible(self._LARGE_MODAL_BTN).click()
+        large_title = self.is_element_present(self._LARGE_BTN_TITLE).text
+        large_body = self.is_element_present(self._LARGE_BTN_BODY).text
+        self.is_element_visible(self._CLOSE_LARGE_MODAL_BTN).click()
+
+        return (small_title, small_body), (large_title, large_body)
+

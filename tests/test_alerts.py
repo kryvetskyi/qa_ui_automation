@@ -1,7 +1,9 @@
 from pages.alerts_page import (
     BrowserWindowsPage,
     AlertPage,
-    FramePage
+    FramePage,
+    NestedFrame,
+    ModalDialog
 )
 
 
@@ -55,3 +57,24 @@ class TestAlertFrameWindow:
             second = frame_page.check_frame('frame2')
             assert first == ['500px', '350px', 'This is a sample page']
             assert second == ['100px', '100px', 'This is a sample page']
+
+    class TestNestedFrames:
+
+        def test_nested_frame(self, driver):
+            nested_frame = NestedFrame(driver, 'https://demoqa.com/nestedframes')
+            nested_frame.open()
+            parent, child = nested_frame.check_nested_frame()
+            assert parent == 'Parent frame'
+            assert child == 'Child Iframe'
+
+    class TestModalDialogs:
+
+        def test_modal_dialogs(self, driver):
+            modal_dialog = ModalDialog(driver, 'https://demoqa.com/modal-dialogs')
+            modal_dialog.open()
+            small, large = modal_dialog.check_modal_dialog()
+
+            assert small[0] == 'Small Modal'
+            assert large[0] == 'Large Modal'
+            assert 'This is a small modal' in small[1]
+            assert 'Lorem Ipsum' in large[1]
