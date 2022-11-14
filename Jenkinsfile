@@ -23,7 +23,7 @@ pipeline {
             steps {
                 echo "Testing.."
                 sh '''
-                python test_jenkins.py
+                python3 test_jenkins.py
                 echo 'Done'
                 '''
             }
