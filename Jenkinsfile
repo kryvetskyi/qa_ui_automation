@@ -12,7 +12,9 @@ pipeline {
             steps {
                 echo "Building.."
                 sh '''
-                echo 1
+                cd pages
+                pip install requirements.txt
+                echo 0
                 '''
             }
         }
@@ -20,7 +22,8 @@ pipeline {
             steps {
                 echo "Testing.."
                 sh '''
-                echo 2
+                python test_jemkins.py
+                echo 'Done'
                 '''
             }
         }
