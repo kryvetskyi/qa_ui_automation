@@ -13,6 +13,7 @@ pipeline {
                 echo "Building.."
                 sh '''
                 cd pages
+                ls -l
                 pip install requirements.txt
                 echo 0
                 '''
@@ -22,7 +23,7 @@ pipeline {
             steps {
                 echo "Testing.."
                 sh '''
-                python test_jemkins.py
+                python test_jenkins.py
                 echo 'Done'
                 '''
             }
