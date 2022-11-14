@@ -23,11 +23,7 @@ pipeline {
             steps {
                 echo "Testing.."
                 sh '''
-                pwd
-                ls -l
-                сd pages
-                pwd
-                ls -l
+                cd pages
                 python3 test_jenkins.py
                 '''
             }
