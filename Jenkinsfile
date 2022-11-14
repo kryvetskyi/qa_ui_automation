@@ -14,7 +14,7 @@ pipeline {
                 sh '''
                 cd pages
                 ls -l
-                pip install requirements.txt
+                pip install --upgrade -r requirements.txt
                 echo 0
                 '''
             }
