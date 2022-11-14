@@ -23,8 +23,8 @@ pipeline {
             steps {
                 echo "Testing.."
                 sh '''
+                сd pages
                 python3 test_jenkins.py
-                echo 'Done'
                 '''
             }
         }
