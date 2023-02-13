@@ -1,3 +1,4 @@
+
 from pages.alerts_page import (
     BrowserWindowsPage,
     AlertPage,
