@@ -1,4 +1,3 @@
-
 # comment to trigger jenkins
 from pages.alerts_page import (
     BrowserWindowsPage,
