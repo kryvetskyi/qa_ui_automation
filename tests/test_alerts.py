@@ -9,6 +9,7 @@ from pages.alerts_page import (
 
 class TestAlertFrameWindow:
     class TestBrowserWindows:
+
         def test_new_tab(self, driver):
             tab = BrowserWindowsPage(driver, 'https://demoqa.com/browser-windows')
             tab.open()
@@ -22,6 +23,7 @@ class TestAlertFrameWindow:
             assert title == 'This is a sample page', 'New tab was not open or title is not present.'
 
     class TestAlert:
+
         def test_check_see_alert(self, driver):
             alert_page = AlertPage(driver, 'https://demoqa.com/alerts')
             alert_page.open()
@@ -47,6 +49,7 @@ class TestAlertFrameWindow:
             assert text_to_send in result_text
 
     class TestFrame:
+
         def test_frames(self, driver):
             frame_page = FramePage(driver, 'https://demoqa.com/frames')
             frame_page.open()
@@ -56,6 +59,7 @@ class TestAlertFrameWindow:
             assert second == ['100px', '100px', 'This is a sample page']
 
     class TestNestedFrames:
+
         def test_nested_frame(self, driver):
             nested_frame = NestedFrame(driver, 'https://demoqa.com/nestedframes')
             nested_frame.open()
@@ -64,6 +68,7 @@ class TestAlertFrameWindow:
             assert child == 'Child Iframe'
 
     class TestModalDialogs:
+
         def test_modal_dialogs(self, driver):
             modal_dialog = ModalDialog(driver, 'https://demoqa.com/modal-dialogs')
             modal_dialog.open()
