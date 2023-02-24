@@ -1,8 +1,10 @@
 import random
+
 from faker import Faker
+
 from data.data import Person
 
-faker_en = Faker('en_US')
+faker_en = Faker("en_US")
 Faker.seed()
 
 

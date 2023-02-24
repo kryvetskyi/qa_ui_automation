@@ -1,23 +1,24 @@
+import base64
+import os
 import random
 import time
 
 import requests
-import base64
-import os
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
+
 from generator.generator import generate_person
-from pages.base_page import BasePage
 from locators.elements_page_locators import (
-    TextBoxPageLocators,
-    WebTablePageLocators,
     ButtonsPageLocators,
     CheckBoxPageLocators,
-    RadioButtonPageLocators,
-    LinksPageLocators,
     DownloadPageLocators,
-    DynamicPropertiesLocators
+    DynamicPropertiesLocators,
+    LinksPageLocators,
+    RadioButtonPageLocators,
+    TextBoxPageLocators,
+    WebTablePageLocators,
 )
+from pages.base_page import BasePage
 
 
 class TestBoxPage(BasePage):
@@ -27,23 +28,31 @@ class TestBoxPage(BasePage):
         person_info = next(generate_person())
         full_name = person_info.full_name
         email = person_info.email
-        current_addr = person_info.cur_addr.replace('\n', '')
-        permanent_addr = person_info.permanent_addr.replace('\n', '')
+        current_addr = person_info.cur_addr.replace("\n", "")
+        permanent_addr = person_info.permanent_addr.replace("\n", "")
 
         self.is_element_visible(self.locators.FULL_NAME).send_keys(full_name)
         self.is_element_visible(self.locators.EMAIL).send_keys(email)
         self.is_element_visible(self.locators.CURRENT_ADDRESS).send_keys(current_addr)
-        self.is_element_visible(self.locators.PERMANENT_ADDRESS).send_keys(permanent_addr)
+        self.is_element_visible(self.locators.PERMANENT_ADDRESS).send_keys(
+            permanent_addr
+        )
         self.scroll_down()
         self.is_element_visible(self.locators.SUBMIT).click()
 
         return full_name, email, current_addr, permanent_addr
 
     def check_filled_form(self):
-        full_name = self.is_element_present(self.locators.CREATED_FULL_NAME).text.split(':')[1]
-        email = self.is_element_present(self.locators.CREATED_EMAIL).text.split(':')[1]
-        current_addr = self.is_element_present(self.locators.CREATED_CURRENT_ADDRESS).text.split(':')[1]
-        permanent_addr = self.is_element_present(self.locators.CREATED_PERMANENT_ADDRESS).text.split(':')[1]
+        full_name = self.is_element_present(self.locators.CREATED_FULL_NAME).text.split(
+            ":"
+        )[1]
+        email = self.is_element_present(self.locators.CREATED_EMAIL).text.split(":")[1]
+        current_addr = self.is_element_present(
+            self.locators.CREATED_CURRENT_ADDRESS
+        ).text.split(":")[1]
+        permanent_addr = self.is_element_present(
+            self.locators.CREATED_PERMANENT_ADDRESS
+        ).text.split(":")[1]
         return full_name, email, current_addr, permanent_addr
 
 
@@ -72,12 +81,12 @@ class CheckBoxPage(BasePage):
         for box in checked_items:
             item_title = box.find_element("xpath", self.locators.ITEM_TITLE)
             data.append(item_title.text)
-        return str(data).lower().replace('.doc', '').replace(' ', '')
+        return str(data).lower().replace(".doc", "").replace(" ", "")
 
     def get_success_text_output(self):
         result_list = self.are_elements_present(self.locators.OUTPUT_RESULT)
         items_text = [word.text for word in result_list]
-        return str(items_text).lower().replace(' ', '')
+        return str(items_text).lower().replace(" ", "")
 
 
 class RadioButtonPage(BasePage):
@@ -87,7 +96,7 @@ class RadioButtonPage(BasePage):
         choices = {
             "yes": self.locators.YES_RADIO_BUTTON,
             "impressive": self.locators.IMPRESSIVE_RADIO_BUTTON,
-            "no": self.locators.NO_IMPRESSIVE_RADIO
+            "no": self.locators.NO_IMPRESSIVE_RADIO,
         }
 
         self.is_element_visible(choices[choice]).click()
@@ -100,7 +109,6 @@ class WebTablePage(BasePage):
     locators = WebTablePageLocators()
 
     def add_new_person(self, count=1):
-
         while count != 0:
             # Generate person info
             person_info = next(generate_person())
@@ -118,7 +126,9 @@ class WebTablePage(BasePage):
             self.is_element_visible(self.locators.EMAIL_INPUT).send_keys(email)
             self.is_element_visible(self.locators.AGE_INPUT).send_keys(age)
             self.is_element_visible(self.locators.SALARY_INPUT).send_keys(salary)
-            self.is_element_visible(self.locators.DEPARTMENT_INPUT).send_keys(department)
+            self.is_element_visible(self.locators.DEPARTMENT_INPUT).send_keys(
+                department
+            )
             self.is_element_visible(self.locators.SUBMIT).click()
             count -= 1
 
@@ -169,8 +179,12 @@ class ButtonsPage(BasePage):
     locators = ButtonsPageLocators()
 
     def click_different_buttons(self):
-        self.action_double_click(self.is_element_visible(self.locators.DOUBLE_CLICK_BUTTON))
-        self.action_right_click(self.is_element_visible(self.locators.RIGHT_CLICK_BUTTON))
+        self.action_double_click(
+            self.is_element_visible(self.locators.DOUBLE_CLICK_BUTTON)
+        )
+        self.action_right_click(
+            self.is_element_visible(self.locators.RIGHT_CLICK_BUTTON)
+        )
         self.is_element_visible(self.locators.CLICK_ME_BUTTON).click()
 
     def check_buttons_text(self):
@@ -185,15 +199,15 @@ class LinksPage(BasePage):
 
     def check_new_tab_valid_link(self):
         valid_link = self.is_element_visible(self.locators.VALID_HOME_LINK)
-        link_href = valid_link.get_attribute('href')
-        response = requests.get(f'{link_href}bad')
+        link_href = valid_link.get_attribute("href")
+        response = requests.get(f"{link_href}bad")
         if response.status_code == 200:
             valid_link.click()
             self.switch_to_new_tab()
             url = self.driver.current_url
             return link_href, url
         else:
-            return link_href, f'Status code: {response.status_code}'
+            return link_href, f"Status code: {response.status_code}"
 
     def check_broken_link(self, url):
         r = requests.get(url)
@@ -210,14 +224,16 @@ class DownloadPage(BasePage):
         return self.is_element_present(self.locators.FILE_INPUT).send_keys(file)
 
     def get_uploaded_file_text(self):
-        return self.is_element_visible(self.locators.FILE_TEXT).text.split('\\')[-1]
+        return self.is_element_visible(self.locators.FILE_TEXT).text.split("\\")[-1]
 
     def download_file(self, file_path):
-        link = self.is_element_present(self.locators.DOWNLOAD_BUTTON).get_attribute('href')
+        link = self.is_element_present(self.locators.DOWNLOAD_BUTTON).get_attribute(
+            "href"
+        )
         link = base64.b64decode(link)
-        offset = link.find(b'\xff\xd8')
+        offset = link.find(b"\xff\xd8")
 
-        with open(file_path, 'wb') as f:
+        with open(file_path, "wb") as f:
             f.write(link[offset:])
             check_file = os.path.exists(file_path)
         return check_file
@@ -235,10 +251,10 @@ class DynamicProperties(BasePage):
 
     def check_changed_color(self):
         color_button = self.is_element_present(self.locators.COLOR_CHANGE)
-        color_before = color_button.value_of_css_property('color')
+        color_before = color_button.value_of_css_property("color")
         color_button.click()
         time.sleep(5)
-        color_after = color_button.value_of_css_property('color')
+        color_after = color_button.value_of_css_property("color")
         return color_before, color_after
 
     def check_button_appears(self):

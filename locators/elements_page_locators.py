@@ -73,6 +73,6 @@ class DownloadPageLocators:
 
 
 class DynamicPropertiesLocators:
-    COLOR_CHANGE = (By.CSS_SELECTOR,  "button[id='colorChange']")
-    ENABLE_BUTTON = (By.CSS_SELECTOR,  "button[id='enableAfter']")
-    VISIBLE_AFTER = (By.CSS_SELECTOR,  "button[id='visibleAfter']")
+    COLOR_CHANGE = (By.CSS_SELECTOR, "button[id='colorChange']")
+    ENABLE_BUTTON = (By.CSS_SELECTOR, "button[id='enableAfter']")
+    VISIBLE_AFTER = (By.CSS_SELECTOR, "button[id='visibleAfter']")

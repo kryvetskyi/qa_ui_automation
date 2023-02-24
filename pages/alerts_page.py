@@ -1,8 +1,10 @@
 import random
 import time
+
+from selenium.webdriver.common.by import By
+
 from locators.alerts_frame_windows_locators import BrowserWindowsPageLocators
 from pages.base_page import BasePage
-from selenium.webdriver.common.by import By
 
 
 class BrowserWindowsPage(BasePage):
@@ -37,7 +39,7 @@ class AlertPage(BasePage):
         return self.is_element_present(self.CONFIRM_RESULT).text
 
     def check_confirm_prompt(self):
-        text = f'autotest-{random.randint(1, 100)}'
+        text = f"autotest-{random.randint(1, 100)}"
         self.is_element_visible(self.PROMPT_ALERT_BUTTON).click()
         modal = self.driver.switch_to.alert
         modal.send_keys(text)
@@ -52,18 +54,18 @@ class FramePage(BasePage):
     TITLE_FRAME = (By.CSS_SELECTOR, "h1[id='sampleHeading']")
 
     def check_frame(self, frame):
-        if frame == 'frame1':
+        if frame == "frame1":
             frame1 = self.is_element_present(self.FIRST_FRAME)
-            width = frame1.get_attribute('width')
-            height = frame1.get_attribute('height')
+            width = frame1.get_attribute("width")
+            height = frame1.get_attribute("height")
             self.driver.switch_to.frame(frame1)
             text = self.is_element_present(self.TITLE_FRAME).text
             self.driver.switch_to.default_content()
             return [width, height, text]
-        if frame == 'frame2':
+        if frame == "frame2":
             frame = self.is_element_present(self.SECOND_FRAME)
-            width = frame.get_attribute('width')
-            height = frame.get_attribute('height')
+            width = frame.get_attribute("width")
+            height = frame.get_attribute("height")
             self.driver.switch_to.frame(frame)
             text = self.is_element_present(self.TITLE_FRAME).text
             return [width, height, text]
@@ -109,4 +111,3 @@ class ModalDialog(BasePage):
         self.is_element_visible(self._CLOSE_LARGE_MODAL_BTN).click()
 
         return (small_title, small_body), (large_title, large_body)
-
