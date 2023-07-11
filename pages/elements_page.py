@@ -139,11 +139,14 @@ class WebTablePage(BasePage):
         return [person.text.splitlines() for person in persons_list]
 
     def search_some_person(self, person_data):
-        self.is_element_visible(self.locators.SEARCH_BOX).send_keys(person_data)
+        window = self.is_element_visible(self.locators.SEARCH_BOX)
+        self.go_to_element(window)
+        window.send_keys(person_data)
 
     def check_searched_person(self):
         delete_button = self.is_element_visible(self.locators.DELETE_BUTTON)
         row = delete_button.find_element("xpath", self.locators.ROW_PARENT)
+        self.go_to_element(row)
         return row.text.splitlines()
 
     def update_person_info(self):

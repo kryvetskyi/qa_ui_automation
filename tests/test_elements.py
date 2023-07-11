@@ -80,11 +80,11 @@ class TestElements:
         def test_web_search_person(self, driver):
             web_table_page = WebTablePage(driver, "https://demoqa.com/webtables")
             web_table_page.open()
-            firstname = web_table_page.add_new_person()[random.randint(1, 5)]
-            web_table_page.search_some_person(firstname)
+            random_person_data = web_table_page.add_new_person()[random.randint(1, 5)]
+            web_table_page.search_some_person(random_person_data)
             searched_result = web_table_page.check_searched_person()
 
-            assert firstname in searched_result, "Person was not found"
+            assert random_person_data in searched_result, "Person was not found"
 
         def test_update_person_info(self, driver):
             web_table_page = WebTablePage(driver, "https://demoqa.com/webtables")
