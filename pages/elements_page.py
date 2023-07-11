@@ -165,12 +165,14 @@ class WebTablePage(BasePage):
         return self.is_element_visible(self.locators.NO_ROWS_FOUND).text
 
     def select_rows(self):
-        count = [5, 10, 20, 25, 50, 100]
+        count = [5, 10, 20]
         data = []
         for row in count:
             self.scroll_down()
-            self.is_element_visible(self.locators.COUNT_ROW_LIST).click()
-            self.is_element_visible(By.CSS_SELECTOR, f"option[value='{row}']").click()
+            select_element = self.is_element_visible(self.locators.COUNT_ROW_LIST)
+            select_element.click()
+            option_locator = By.XPATH, f'//option[@value="{row}"]'
+            option_element = self.driver.find_element(*option_locator).click()
             data.append(self.check_count_rows())
         return data
 

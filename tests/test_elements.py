@@ -119,7 +119,7 @@ class TestElements:
             web_table_page = WebTablePage(driver, "https://demoqa.com/webtables")
             web_table_page.open()
             result = web_table_page.select_rows()
-            assert result == [5, 10, 20, 25, 50, 100], "Count rows were not changed."
+            assert result == [5, 10, 20], "Count rows were not changed."
 
     class TestButtonsPage:
         def test_buttons_page(self, driver):

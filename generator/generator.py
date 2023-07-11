@@ -14,7 +14,7 @@ def generate_person():
         firstname=faker_en.first_name(),
         lastname=faker_en.last_name(),
         age=random.randint(18, 100),
-        department=faker_en.job(),
+        department=faker_en.job()[:25],     # only 25 symbols are accepted  for this field
         salary=random.randint(2000, 20000),
         email=faker_en.email(),
         cur_addr=faker_en.address(),

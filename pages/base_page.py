@@ -1,6 +1,8 @@
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait as wait
+from datetime import datetime
+from pathlib import Path
 
 
 class BasePage:
@@ -65,3 +67,12 @@ class BasePage:
 
     def switch_to_new_tab(self):
         self.driver.switch_to.window(self.driver.window_handles[1])
+
+    def capture_screenshot(self):
+        timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+        screenshot_filename = f"screenshot_{timestamp}.png"
+        screenshot_dir = Path(__file__).resolve().parent / '..' / 'screenshots'
+        screenshot_dir.mkdir(parents=True, exist_ok=True)
+        screenshot_path = screenshot_dir / screenshot_filename
+        self.driver.get_screenshot_as_file(screenshot_path)
+
