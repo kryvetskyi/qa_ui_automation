@@ -42,7 +42,9 @@ class AlertPage(BasePage):
 
     def check_confirm_prompt(self):
         text = f"autotest-{random.randint(1, 100)}"
-        self.is_element_visible(self.PROMPT_ALERT_BUTTON).click()
+        button = self.is_element_visible(self.PROMPT_ALERT_BUTTON)
+        self.go_to_element(button)
+        button.click()
         modal = self.driver.switch_to.alert
         modal.send_keys(text)
         modal.accept()
