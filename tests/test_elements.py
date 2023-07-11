@@ -1,6 +1,5 @@
-import os
 import random
-import time
+
 
 from pages.elements_page import (
     ButtonsPage,
