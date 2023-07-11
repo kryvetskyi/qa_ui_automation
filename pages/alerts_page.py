@@ -101,13 +101,13 @@ class ModalDialog(BasePage):
 
     def check_modal_dialog(self):
         self.is_element_visible(self._SMALL_MODAL_BTN).click()
-        small_title = self.is_element_present(self._SMALL_BTN_TITLE).text
-        small_body = self.is_element_present(self._SMALL_BTN_BODY).text
+        small_title = self.is_element_visible(self._SMALL_BTN_TITLE).text
+        small_body = self.is_element_visible(self._SMALL_BTN_BODY).text
         self.is_element_visible(self._CLOSE_SMALL_MODAL_BTN).click()
 
         self.is_element_visible(self._LARGE_MODAL_BTN).click()
-        large_title = self.is_element_present(self._LARGE_BTN_TITLE).text
-        large_body = self.is_element_present(self._LARGE_BTN_BODY).text
+        large_title = self.is_element_visible(self._LARGE_BTN_TITLE).text
+        large_body = self.is_element_visible(self._LARGE_BTN_BODY).text
         self.is_element_visible(self._CLOSE_LARGE_MODAL_BTN).click()
 
         return (small_title, small_body), (large_title, large_body)
