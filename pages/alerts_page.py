@@ -34,7 +34,9 @@ class AlertPage(BasePage):
         return self.driver.switch_to.alert.text
 
     def check_confirm_alert(self):
-        self.is_element_visible(self.CONFIRM_ALERT_BUTTON).click()
+        button = self.is_element_visible(self.CONFIRM_ALERT_BUTTON)
+        self.go_to_element(button)
+        button.click()
         self.driver.switch_to.alert.accept()
         return self.is_element_present(self.CONFIRM_RESULT).text
 

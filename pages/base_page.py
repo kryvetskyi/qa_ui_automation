@@ -41,7 +41,8 @@ class BasePage:
         self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
 
     def go_to_element(self, element):
-        self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
+        self.driver.execute_script("arguments[0].scrollIntoView();", element)
+
 
     def action_double_click(self, element):
         action = ActionChains(self.driver)
