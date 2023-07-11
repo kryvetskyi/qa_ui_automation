@@ -172,7 +172,7 @@ class WebTablePage(BasePage):
             select_element = self.is_element_visible(self.locators.COUNT_ROW_LIST)
             select_element.click()
             option_locator = By.XPATH, f'//option[@value="{row}"]'
-            option_element = self.driver.find_element(*option_locator).click()
+            self.driver.find_element(*option_locator).click()
             data.append(self.check_count_rows())
         return data
 

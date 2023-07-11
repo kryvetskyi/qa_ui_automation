@@ -35,5 +35,5 @@ class FormPage(BasePage):
         return person_info
 
     def check_added_student(self):
-        modal_window = self.are_elements_present(self.locators.RESULT_MODAL_TABLE)
+        modal_window = self.are_elements_visible(self.locators.RESULT_MODAL_TABLE)
         return [student.text for student in modal_window]
