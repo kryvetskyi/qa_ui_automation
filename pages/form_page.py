@@ -1,3 +1,4 @@
+import allure
 from selenium.webdriver import Keys
 
 from generator.generator import generate_person
@@ -8,6 +9,7 @@ from pages.base_page import BasePage
 class FormPage(BasePage):
     locators = FormPageLocators()
 
+    @allure.step("filling form page")
     def fill_form_page(self, file_to_load):
         person_info = next(generate_person())
         self.remove_footer()
@@ -34,6 +36,7 @@ class FormPage(BasePage):
         self.is_element_present(self.locators.SUBMIT).click()
         return person_info
 
+    @allure.step("checking added student")
     def check_added_student(self):
         modal_window = self.are_elements_visible(self.locators.RESULT_MODAL_TABLE)
         return [student.text for student in modal_window]

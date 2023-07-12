@@ -1,6 +1,7 @@
 import random
 import time
 
+import allure
 from selenium.webdriver.common.by import By
 
 from locators.alerts_frame_windows_locators import BrowserWindowsPageLocators
@@ -10,6 +11,7 @@ from pages.base_page import BasePage
 class BrowserWindowsPage(BasePage):
     locators = BrowserWindowsPageLocators()
 
+    @allure.step("check tab opened")
     def check_tab_opened(self):
         self.is_element_visible(self.locators.TAB).click()
         self.switch_to_new_tab()
@@ -24,15 +26,18 @@ class AlertPage(BasePage):
     CONFIRM_RESULT = (By.CSS_SELECTOR, "span[id='confirmResult']")
     PROMPT_RESULT = (By.CSS_SELECTOR, "span[id='promptResult']")
 
+    @allure.step("check see alert")
     def check_see_alert(self):
         self.is_element_visible(self.SEE_ALERT_BUTTON).click()
         return self.driver.switch_to.alert.text
 
+    @allure.step("check alert appears")
     def check_alert_appears(self):
         self.is_element_visible(self.TIME_ALERT_BUTTON).click()
         time.sleep(5)
         return self.driver.switch_to.alert.text
 
+    @allure.step("check confirm alert")
     def check_confirm_alert(self):
         button = self.is_element_visible(self.CONFIRM_ALERT_BUTTON)
         self.go_to_element(button)
@@ -40,6 +45,7 @@ class AlertPage(BasePage):
         self.driver.switch_to.alert.accept()
         return self.is_element_present(self.CONFIRM_RESULT).text
 
+    @allure.step("check confirm prompt")
     def check_confirm_prompt(self):
         text = f"autotest-{random.randint(1, 100)}"
         button = self.is_element_visible(self.PROMPT_ALERT_BUTTON)
@@ -57,6 +63,7 @@ class FramePage(BasePage):
     SECOND_FRAME = (By.CSS_SELECTOR, "iframe[id='frame2']")
     TITLE_FRAME = (By.CSS_SELECTOR, "h1[id='sampleHeading']")
 
+    @allure.step("check frame")
     def check_frame(self, frame):
         if frame == "frame1":
             frame1 = self.is_element_present(self.FIRST_FRAME)
@@ -81,6 +88,7 @@ class NestedFrame(BasePage):
     CHILD_FRAME = (By.CSS_SELECTOR, "iframe[srcdoc='<p>Child Iframe</p>']")
     CHILD_TEXT = (By.CSS_SELECTOR, "p")
 
+    @allure.step("check nested frame")
     def check_nested_frame(self):
         parent_frame = self.is_element_present(self.PARENT_FRAME)
         self.driver.switch_to.frame(parent_frame)
@@ -103,15 +111,18 @@ class ModalDialog(BasePage):
     _LARGE_BTN_TITLE = (By.CSS_SELECTOR, "div[id='example-modal-sizes-title-lg']")
     _CLOSE_LARGE_MODAL_BTN = (By.CSS_SELECTOR, "button[id='closeLargeModal']")
 
+    @allure.step("check modal dialog")
     def check_modal_dialog(self):
         self.is_element_visible(self._SMALL_MODAL_BTN).click()
-        small_title = self.is_element_visible(self._SMALL_BTN_TITLE).text
-        small_body = self.is_element_visible(self._SMALL_BTN_BODY).text
+        with allure.step("get small tittle and small body text"):
+            small_title = self.is_element_visible(self._SMALL_BTN_TITLE).text
+            small_body = self.is_element_visible(self._SMALL_BTN_BODY).text
         self.is_element_visible(self._CLOSE_SMALL_MODAL_BTN).click()
 
         self.is_element_visible(self._LARGE_MODAL_BTN).click()
-        large_title = self.is_element_visible(self._LARGE_BTN_TITLE).text
-        large_body = self.is_element_visible(self._LARGE_BTN_BODY).text
+        with allure.step("get large tittle and large body text"):
+            large_title = self.is_element_visible(self._LARGE_BTN_TITLE).text
+            large_body = self.is_element_visible(self._LARGE_BTN_BODY).text
         self.is_element_visible(self._CLOSE_LARGE_MODAL_BTN).click()
 
         return (small_title, small_body), (large_title, large_body)
