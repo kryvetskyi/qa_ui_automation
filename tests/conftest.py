@@ -1,5 +1,4 @@
 from datetime import datetime
-import os
 import random
 from pathlib import Path
 
@@ -18,29 +17,39 @@ def pytest_addoption(parser):
 
 @pytest.fixture(scope='function')
 def driver(request):
+    # Retrieve the chosen browser from command-line options
     browser = request.config.getoption("--driver")
+
+    # Check if only 'chrome' is supported
     if browser != 'chrome':
         pytest.fail('only chrome is supported at the moment')
 
+    # Retrieve the headless option from command-line options
     headless = request.config.getoption("--headless")
+
+    # Configure Chrome options
     options = Options()
     options.add_argument("--start-maximized")
-    if headless:
-        options.add_argument(headless)
 
+    # Add headless mode option if requested
+    if headless:
+        options.add_argument("--headless")
+
+    # Create the Chrome WebDriver instance
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
+
     yield driver
 
+    # After the test execution, if the test failed, capture and attach a screenshot
     if request.node.rep_call.failed:
         screenshot_filename, screenshot_path = create_screenshot_path()
         allure.attach(driver.get_screenshot_as_file(screenshot_path),
                       name=screenshot_filename,
                       attachment_type=allure.attachment_type.PNG)
 
-    driver.quit()
-
 
 def create_screenshot_path():
+    # Generate a unique filename and path for the screenshot
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     screenshot_filename = f"screenshot_{timestamp}.png"
     screenshot_dir = Path(__file__).resolve().parent.parent / 'reports' / 'screenshots'
@@ -51,16 +60,30 @@ def create_screenshot_path():
 
 @pytest.fixture(scope="function")
 def output_file(tmp_path):
-    tmp_file_full_path = os.path.join(tmp_path, f"file.txt{random.randint(0, 99)}")
+    # Create the full path of the temporary file
+    tmp_file_full_path = tmp_path / f"file.txt{random.randint(0, 99)}"
+
+    # Write test data to the temporary file
     with open(tmp_file_full_path, "w+") as f:
-        f.write(f"test data{random.randint(0, 1000)}")
-        file_name = tmp_file_full_path.split("/")[-1]
+        test_data = f"test data{random.randint(0, 1000)}"
+        f.write(test_data)
+
+        # Extract the file name from the full path
+        file_name = tmp_file_full_path.name
+
+        # Yield the full path and file name to the test
         yield tmp_file_full_path, file_name
+
 
 
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
 def pytest_runtest_makereport(item):
+    # Yield the test outcome to the hook
     outcome = yield
     rep = outcome.get_result()
+
+    # Set an attribute on the test item with the test outcome information
     setattr(item, "rep_" + rep.when, rep)
+
+    # Return the test report outcome
     return rep

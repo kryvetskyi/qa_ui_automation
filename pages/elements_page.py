@@ -251,7 +251,7 @@ class DownloadPage(BasePage):
 
     @allure.step("uploading file")
     def upload_file(self, file):
-        return self.is_element_present(self.locators.FILE_INPUT).send_keys(file)
+        return self.is_element_present(self.locators.FILE_INPUT).send_keys(str(file))
 
     @allure.step("get uploaded file text")
     def get_uploaded_file_text(self):
@@ -265,9 +265,10 @@ class DownloadPage(BasePage):
         link = base64.b64decode(link)
         offset = link.find(b"\xff\xd8")
 
-        with open(file_path, "wb") as f:
+        with open(str(file_path), "wb") as f:  # Convert Path object to a string
             f.write(link[offset:])
-            check_file = os.path.exists(file_path)
+            check_file = os.path.exists(str(file_path))  # Convert Path object to a string
+
         return check_file
 
 
