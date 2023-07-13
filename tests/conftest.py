@@ -75,7 +75,6 @@ def output_file(tmp_path):
         yield tmp_file_full_path, file_name
 
 
-
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
 def pytest_runtest_makereport(item):
     # Yield the test outcome to the hook
