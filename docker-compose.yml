@@ -5,7 +5,8 @@ services:
       context: .
       dockerfile: Dockerfile
     depends_on:
-      - selenium-grid  # Specify selenium-grid as a dependency
+      selenium-grid:
+        condition: service_healthy               # Wait for the selenium-grid service to complete successfully
     networks:
       - mynetwork
 
