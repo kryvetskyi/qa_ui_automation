@@ -9,5 +9,3 @@ RUN pip install -r requirements.txt
 EXPOSE 4444
 
 CMD ["pytest", "tests/test_alerts.py"]
-
-
