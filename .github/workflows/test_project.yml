@@ -27,5 +27,5 @@ jobs:
         run: sleep 10  # Ждем некоторое время, чтобы грид успел стартовать
 
       - name: Run Tests
-        run: docker-compose exec app pytest tests/test_alerts.py #
+        run: docker-compose exec -T app pytest tests/test_alerts.py 
 
