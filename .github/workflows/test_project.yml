@@ -1,0 +1,33 @@
+name: Run Tests
+
+on:
+  push:
+    branches:
+      - main  # указываете ветку, на которой должны запускаться тесты
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      grid:
+        image: selenium/standalone-chrome
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Build and Run Docker Compose
+        run: |
+          docker-compose build
+          docker-compose up -d
+
+      - name: Wait for Grid to Start
+        run: sleep 10  # Ждем некоторое время, чтобы грид успел стартовать
+
+      - name: Run Tests
+        run: docker-compose exec app pytest  tests/test_alerts.py # Здесь используйте нужную команду для запуска ваших тестов
+
+      - name: Stop Docker Compose
+        run: docker-compose down
+
