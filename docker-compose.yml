@@ -12,7 +12,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 2g
+          memory: 4g
 
   selenium-grid:
     image: selenium/standalone-chrome
