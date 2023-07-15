@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main  # указываете ветку, на которой должны запускаться тесты
+  workflow_dispatch:  # Добавьте workflow_dispatch для возможности запуска вручную
 
 jobs:
   test:
@@ -26,8 +27,5 @@ jobs:
         run: sleep 10  # Ждем некоторое время, чтобы грид успел стартовать
 
       - name: Run Tests
-        run: docker-compose exec app pytest  tests/test_alerts.py # Здесь используйте нужную команду для запуска ваших тестов
-
-      - name: Stop Docker Compose
-        run: docker-compose down
+        run: docker-compose exec app pytest tests/test_alerts.py #
 
