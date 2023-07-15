@@ -10,42 +10,52 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 
 
-def pytest_addoption(parser):
-    parser.addoption("--driver", action="store", default="chrome", help="Enter browser")
-    parser.addoption("--headless", action="store", default="headless", help="Run tests in headless mode")
+# def pytest_addoption(parser):
+    #parser.addoption("--driver", action="store", default="chrome", help="Enter browser")
+    #parser.addoption("--headless", action="store", default="headless", help="Run tests in headless mode")
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope="function")
 def driver(request):
+    options = Options()
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--headless")
+    driver = webdriver.Remote(command_executor="http://selenium-grid:4444/wd/hub", options=options)
+    yield driver
+    driver.quit()
+
+#@pytest.fixture(scope='function')
+#def driver(request):
     # Retrieve the chosen browser from command-line options
-    browser = request.config.getoption("--driver")
+ #   browser = request.config.getoption("--driver")
 
     # Check if only 'chrome' is supported
-    if browser != 'chrome':
-        pytest.fail('only chrome is supported at the moment')
+  #  if browser != 'chrome':
+   #     pytest.fail('only chrome is supported at the moment')
 
     # Retrieve the headless option from command-line options
-    headless = request.config.getoption("--headless")
+    #headless = request.config.getoption("--headless")
 
     # Configure Chrome options
-    options = Options()
-    options.add_argument("--start-maximized")
+   # options = Options()
+    # options.add_argument("--start-maximized")
 
     # Add headless mode option if requested
-    if headless:
-        options.add_argument("--headless")
+    #if headless:
+      #  options.add_argument("--headless")
 
     # Create the Chrome WebDriver instance
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
-
-    yield driver
+    # driver = weibdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
+    # driver = webdriver.Remote(command_executor="http://3.67.207.173:4444/wd/hub", options=options)
+    # yield driver
 
     # After the test execution, if the test failed, capture and attach a screenshot
-    if request.node.rep_call.failed:
-        screenshot_filename, screenshot_path = create_screenshot_path()
-        allure.attach(driver.get_screenshot_as_file(screenshot_path),
-                      name=screenshot_filename,
-                      attachment_type=allure.attachment_type.PNG)
+    #if request.node.rep_call.failed:
+     #   screenshot_filename, screenshot_path = create_screenshot_path()
+        #allure.attach(driver.get_screenshot_as_file(screenshot_path),
+         #             name=screenshot_filename,
+          #            attachment_type=allure.attachment_type.PNG)
 
 
 def create_screenshot_path():
@@ -75,14 +85,14 @@ def output_file(tmp_path):
         yield tmp_file_full_path, file_name
 
 
-@pytest.hookimpl(hookwrapper=True, tryfirst=True)
-def pytest_runtest_makereport(item):
+#@pytest.hookimpl(hookwrapper=True, tryfirst=True)
+#def pytest_runtest_makereport(item):
     # Yield the test outcome to the hook
-    outcome = yield
-    rep = outcome.get_result()
+ #   outcome = yield
+  #  rep = outcome.get_result()
 
     # Set an attribute on the test item with the test outcome information
-    setattr(item, "rep_" + rep.when, rep)
+    # setattr(item, "rep_" + rep.when, rep)
 
     # Return the test report outcome
-    return rep
+    #return rep

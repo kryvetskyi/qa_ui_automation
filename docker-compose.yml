@@ -1,0 +1,27 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - selenium-grid  # Specify selenium-grid as a dependency
+    networks:
+      - mynetwork
+
+  selenium-grid:
+    image: selenium/standalone-chrome
+    ports:
+      - 4444:4444
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://selenium-grid:4444/wd/hub/status"]
+      interval: 1s
+      retries: 30
+      timeout: 5s
+    shm_size: 2g
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+
