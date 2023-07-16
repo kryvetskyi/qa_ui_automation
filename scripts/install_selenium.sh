@@ -6,6 +6,6 @@ set -e
 
 docker run -d \
 	-p 4444:4444 \
-	--network mynetwork \
 	--shm-size="2g" \
+	--restart always \
 	selenium/standalone-chrome
