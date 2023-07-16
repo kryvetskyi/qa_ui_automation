@@ -6,4 +6,4 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-CMD ["pytest", "tests/test_alerts.py"]
+CMD ["pytest", "tests/test_form.py"]
