@@ -6,4 +6,6 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-CMD ["pytest", "tests/test_form.py"]
+RUN apt-get update && apt-get install -y allure
+
+CMD ["pytest", "--allure-dir=/app/report/allure-results", "tests/test_form.py"]
