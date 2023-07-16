@@ -22,3 +22,18 @@ jobs:
         run: |
           docker run --rm -v /data/allure-results:/app/reports/allure-results --name test_container test_image:${{ github.sha }}
 
+      - name: Install Allure
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y allure
+
+      - name: Generate Allure Report
+        run: |
+          allure generate /data/allure-results -o /data/allure-report --clean
+
+      - name: Archive Allure Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: allure-report
+          path: /data/allure-report
+
