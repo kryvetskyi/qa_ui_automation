@@ -16,8 +16,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t test_image .
+          docker build -t test_image:${{ github.sha_short }} .
 
       - name: Run Tests
         run: |
-          docker run --rm --name test_container test_image
+          docker run --rm --name test_container test_image:{{ github.sha_short}}
