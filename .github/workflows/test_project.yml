@@ -16,7 +16,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          whoami
+          docker ps -a
+          docker images
           pwd
           ls -la
           docker build -t test_image:${{ github.sha }} .
@@ -31,6 +32,8 @@ jobs:
 
       - name: Run Tests
         run: |
+          docker ps -a
+          docker images
           whoami
           pwd
           ls -la
@@ -47,6 +50,8 @@ jobs:
 
       - name: Cleanup Docker image
         run: |
+          docker ps -a
+          docker images
           whoami
           pwd
           ls -la
