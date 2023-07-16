@@ -14,26 +14,20 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
+      - name: Set up Docker
+        uses: docker/setup-docker@v1
+
       - name: Build Docker image
-        run: |
-          docker build -t test_image:${{ github.sha }} .
+        run: docker build -t test_image .
 
       - name: Run Tests
         run: |
-          docker run --rm -v /data/allure-results:/app/reports/allure-results --name test_container test_image:${{ github.sha }}
-
-      - name: Install Allure
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y allure
+          docker run --rm -v ${{ github.workspace }}/reports/allure-results:/app/reports/allure-results test_image
 
       - name: Generate Allure Report
-        run: |
-          allure generate /data/allure-results -o /data/allure-report --clean
-
-      - name: Archive Allure Report
-        uses: actions/upload-artifact@v2
+        uses: anothrNick/github-allure-report-action@v1.3.0
         with:
-          name: allure-report
-          path: /data/allure-report
+          report_folder: reports/allure-results
+          report_output_folder: reports/allure-report
+
 
