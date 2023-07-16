@@ -7,7 +7,7 @@ on:
   workflow_dispatch:  # Add workflow_dispatch for manual triggering
 
 jobs:
-  build-image:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,20 +16,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t test_image  .
-          docker ps -a
-          docker images
-
-  test:
-    runs-on: ubuntu-latest
-    needs: build-image
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
+          docker build -t test_image .
 
       - name: Run Tests
         run: |
-          docker ps -a
-          docker images
-          docker run --name test_container test_image
+          docker run --rm --name test_container test_image
