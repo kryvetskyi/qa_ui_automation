@@ -20,5 +20,5 @@ jobs:
 
       - name: Run Tests
         run: |
-          docker run --rm --name test_container test_image:${{ github.sha }}
+          docker run --rm -v /data/allure-results:/app/reports/allure-results --name test_container test_image:${{ github.sha }}
 
