@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch  # Add workflow_dispatch for manual triggering
+  workflow_dispatch:  # Add workflow_dispatch for manual triggering
 
 jobs:
   test:
@@ -12,15 +12,16 @@ jobs:
 
     steps:
       - name: Checkout Code
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
 
       - name: Build Docker image
-        run: | 
+        run: |
           docker build -t test_image .
 
       - name: Run Tests
         run: |
-          docker run --rm --name test_container test_image 
+          docker run --rm --name test_container test_image
+
 
 
 
