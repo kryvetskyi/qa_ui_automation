@@ -28,7 +28,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          docker run --rm --name test_container test_image:${{ github.sha }}
+          docker run --name test_container test_image:${{ github.sha }}
 
   cleanup:
     runs-on: ubuntu-latest
