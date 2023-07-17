@@ -22,12 +22,4 @@ jobs:
 
       - name: Run Tests
         run: |
-          docker run --rm -v ${{ github.workspace }}/reports/allure-results:/app/reports/allure-results test_image
-
-      - name: Generate Allure Report
-        uses: kryvetskyi/github-allure-report-action@v1.3.0
-        with:
-          report_folder: reports/allure-results
-          report_output_folder: reports/allure-report
-
-
+          docker run --rm -v ${{ github.workspace }}/data/allure-results:/app/reports/allure-results test_image
