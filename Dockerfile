@@ -8,6 +8,4 @@ RUN pip install -r requirements.txt
 
 RUN apt-get update && apt-get install -y allure
 
-VOLUME /data/allure-results
-
 CMD ["pytest", "--alluredir=reports/allure-results", "tests/test_alerts.py"]
