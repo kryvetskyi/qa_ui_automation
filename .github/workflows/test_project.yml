@@ -22,4 +22,11 @@ jobs:
 
       - name: Run Tests
         run: |
-          docker run --rm -v ${{ github.workspace }}/data/allure-results:/app/reports/allure-results test_image
+          docker run --rm -v ${{ github.workspace }}/reports/allure-results:/app/reports/allure-results test_image
+          
+      - name: Upload Reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-reports
+          path: reports/allure-results
+
