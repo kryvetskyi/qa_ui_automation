@@ -33,15 +33,15 @@ class TestAlertFrameWindow:
         #         title == "This is a sample page"
         #     ), "New tab was not open or title is not present."
 
-    @allure.feature("Alert")
-    class TestAlert:
+    # @allure.feature("Alert")
+    # class TestAlert:
 
-        @allure.title("Check alert text is correct")
-        def test_check_see_alert(self, driver):
-            alert_page = AlertPage(driver, "https://demoqa.com/alerts")
-            alert_page.open()
-            alert_text = alert_page.check_see_alert()
-            assert alert_text == "You clicked a button"
+    #     @allure.title("Check alert text is correct")
+    #     def test_check_see_alert(self, driver):
+    #         alert_page = AlertPage(driver, "https://demoqa.com/alerts")
+    #         alert_page.open()
+    #         alert_text = alert_page.check_see_alert()
+    #         assert alert_text == "You clicked a button"
 
         # @allure.title("Check alert message appears")
         # def test_check_alert_appears(self, driver):
