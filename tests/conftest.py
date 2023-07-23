@@ -21,7 +21,7 @@ def driver(request):
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--headless")
-    driver = webdriver.Remote(command_executor="http://18.194.41.134:4444/wd/hub", options=options)
+    driver = webdriver.Remote(command_executor="http://localhost:4444/wd/hub", options=options)
     yield driver
     driver.quit()
 
