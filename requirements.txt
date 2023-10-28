@@ -1,8 +1,8 @@
 pytest~=7.4.0
-selenium~=4.10.0
+selenium
 webdriver-manager
 Faker==19.1.0
 allure-pytest
-requests~=2.31.0
+requests
 black
 isort
